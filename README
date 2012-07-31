@@ -1,0 +1,5 @@
+todoer is a simple tool for tracking todo items, primarily as a way
+of experimenting with tsapp, but it is useful too. 
+
+It simply creates appropriately tagged tiddlers and lists those that 
+are there.
