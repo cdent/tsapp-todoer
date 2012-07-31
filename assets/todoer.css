@@ -1,0 +1,64 @@
+
+html {
+    height: 100%;
+    position: relative;
+    background: #F0F4F8;
+}
+
+body {
+    background: white;
+    font-family: "helvetica neue";
+    width: 50%;
+    margin: 1em auto auto auto;
+    box-shadow: rgba(0,0,0,0.25) 2px 2px 2px 2px;
+    padding: 0 1em 1em 1em;
+    min-height: 90%;
+}
+
+.dataentry textarea, input {
+    display: block;
+    width: 100%;
+}
+
+.dataentry textarea {
+    height: 4em;
+}
+
+h1, h2 {
+    color: #B8B6BD;
+    text-align: center;
+    text-shadow: rgba(0,0,0,0.25) 2px 2px 2px;
+    margin-bottom: 1em;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+.todos li {
+    clear: both;
+    position: relative;
+    margin-top: 1em;
+}
+
+.todos p {
+    padding-left: 3em;
+}
+
+.todos input {
+    display: inline;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+@media all and (max-width: 60em) {
+    body {
+       width: 90%;
+   }
+}

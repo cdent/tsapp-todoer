@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>todoer</title>
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="/bags/common/tiddlers/reset.css" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="/bags/todoer_public/tiddlers/todoer.css" />
+    </head>
+    <body>
+        <h1>todoer</h1>
+
+        <div class="dataentry">
+            <form>
+            <textarea name="todo" placeholder="enter your new todo"></textarea>
+            <input name="tags" placeholder="tags">
+            <input type="submit" value="Make it So!">
+            </form>
+        </div>
+        <ul class="todos">
+            <li data-tiddler="00045"><label><input type="checkbox" checked><p>eat some
+            cheerios and some other stuff like monkeys and children
+            and food that isn't food because i'm hard see and that's
+            the way see</p></label></li>
+        <li data-tiddler="0032"><label><input type="checkbox"><p>label the
+            widgets</p></label></li>
+        </ul>
+        <script src="/status.js"></script>
+        <script src="/bags/common/tiddlers/jquery.js"></script>
+        <script src="/bags/todoer_public/tiddlers/todoer.js"></script>
+    </body>
+</html>
