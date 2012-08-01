@@ -14,14 +14,15 @@ following:
 * install tsapp: `pip install -U tsapp`
 * clone this repo
 * cd into the repo
-* create a file called `.tsapp` containing
-```
-target_server: http://todoer.tiddlyspace.com
-```
 * run `tsapp serve`
 * open your browser to `http://0.0.0.0:8080/todoer.html`
 
-Note that without additional configuration, your actions will be readonly.
+If you want to be able to write todos, then you need to authenticate. Once
+you do that todos will be created in *your space*. Authenticate with:
+
+```
+tsapp auth
+```
 
 See the tsapp repo or space for more info on tsapp:
 

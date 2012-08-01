@@ -6,11 +6,17 @@ $(function() {
     /*
      * provided by /status.js
      *
-     * 'space' will be undefined if not in a space, causing the code
-     * to error out, which is fine, it's not supposed to work when 
-     * not in a space.
+     * 'space' will be undefined if not in a space, in that case
+     * we'll use the current username to generate a bag name. If
+     * the current user is GUEST, they won't be able to write, and
+     * an appropriate error will be presented.
      */
-    var space = tiddlyweb.status.space.name;
+    var targetBagBase;
+    if (tiddlyweb.status.space) {
+        targetBagBase = tiddlyweb.status.space.name;
+    } else {
+        targetBagBase = tiddlyweb.status.username;
+    }
 
     /*
      * Add a todo item, meaning li element, to the display.
@@ -27,16 +33,16 @@ $(function() {
     }
 
     /*
-     * Retrieve a single tiddler with title from the current space's
-     * public bag as JSON.
+     * Retrieve a single tiddler with title from the current targetBag
+     * as JSON.
      *
      * For reference, the generated request is
      *
-     * GET /bags/<spacename>_public/tiddlers/<title>
+     * GET /bags/<targetBagBase>_public/tiddlers/<title>
      * Accept: application/json
      */
     function getTiddler(title, callback) {
-        var uri = '/bags/' + space + '_public/tiddlers/' + title;
+        var uri = '/bags/' + targetBagBase + '_public/tiddlers/' + title;
 
         $.ajax({
             url: uri,
@@ -52,13 +58,13 @@ $(function() {
      * Then clear the list element that represented the todo.
      *
      * For reference the generated request is:
-     * PUT /bags/<spacename>_public/tiddlers/<title>
+     * PUT /bags/<targetBagBase>_public/tiddlers/<title>
      * Content-Type: application/json
      * {THE JSON}
      */
     function completeTodo(tiddler) {
         var activeTagIndex = tiddler.tags.indexOf('todo:active'),
-            uri = '/bags/' + space + '_public/tiddlers/' + tiddler.title,
+            uri = '/bags/' + targetBagBase + '_public/tiddlers/' + tiddler.title,
             tiddlerJSON;
 
         if (activeTagIndex !== -1) {
@@ -111,7 +117,7 @@ $(function() {
             text = textarea.val(),
             tags = tagsarea.val() ? tagsarea.val().split(/\s+/) : [],
             hash = adler32(text + tags + Date.now()),
-            uri = '/bags/' + space + '_public/tiddlers/'
+            uri = '/bags/' + targetBagBase + '_public/tiddlers/'
                 + encodeURIComponent(hash),
             tiddler,
             tiddlerJSON;
@@ -151,11 +157,11 @@ $(function() {
      *
      * The request is usually:
      *
-     * GET /bags/<spacename>_public/tiddlers?fat=1;select=tag:todo:active;sort=-modified
+     * GET /bags/<targetBagBase>_public/tiddlers?fat=1;select=tag:todo:active;sort=-modified
      * Accept: application/json
      */
     function refreshList(sortKey) {
-        var uri = '/bags/' + space +
+        var uri = '/bags/' + targetBagBase +
             '_public/tiddlers?fat=1;select=tag:todo:active';
 
         if (sortKey) {
