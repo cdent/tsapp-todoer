@@ -7,3 +7,19 @@ are there.
 The hope here is that someone will see just how easy this stuff is
 and make a good todo application, using modern JavaScript libraries
 and skillz.
+
+If you wish to experiment with using todoer and tsapp together do the
+following:
+
+* install tsapp: `pip install -U tsapp`
+* clone this repo
+* cd into the repo
+* run `tsapp serve`
+* open your browser to `http://0.0.0.0:8080/todoer.html`
+
+Note that without additional configuration, your actions will be readonly.
+
+See the tsapp repo or space for more info on tsapp:
+
+* https://github.com/cdent/tsapp
+* http://tsapp.tiddlyspace.com
