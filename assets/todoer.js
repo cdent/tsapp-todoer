@@ -7,7 +7,7 @@ $(function() {
      * provided by /status.js
      *
      * 'space' will be undefined if not in a space, causing the code
-     * to error out, which is fine, it's not supposed to work when 
+     * to error out, which is fine, it's not supposed to work when
      * not in a space.
      */
     var space = tiddlyweb.status.space.name;
@@ -81,7 +81,7 @@ $(function() {
 
     }
 
-    /* 
+    /*
      * Remove the list element associated with a todo tiddler.
      */
     function clearTodo(tiddler) {
