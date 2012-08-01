@@ -1,12 +1,19 @@
 /*jslint browser: true */
+
 $(function() {
     "use strict";
 
-    function addTodo(tiddler) {
+    var space = tiddlyweb.status.space.name;
+
+    function addTodo(tiddler, top) {
         var item = $('<li>').attr({'data-tiddler': tiddler.title}).
             append('<label><input type="checkbox"><p>' + tiddler.text +
                 '</p></label>');
-        $('.todos').append(item);
+        if (top) {
+            $('.todos').prepend(item);
+        } else {
+            $('.todos').append(item);
+        }
     }
 
     $(document).on('click', '.todos input[type="checkbox"]', function() {
@@ -26,7 +33,6 @@ $(function() {
             text = textarea.val(),
             tags = tagsarea.val().split(/\s+/),
             hash = adler32(text + tags + Date.now()),
-            space = tiddlyweb.status.space.name,
             uri = '/bags/' + space + '_public/tiddlers/'
                 + encodeURIComponent(hash),
             tiddler,
@@ -45,12 +51,38 @@ $(function() {
             success: function() {
                 tiddler.title = hash;
                 addTodo(tiddler);
-                console.log(text, tags, hash);
             }
         });
 
     });
-    // see https://gist.github.com/1200559/1c2b2093a661c4727958ff232cd12de8b8fb9db9
+
+    function presentList(tiddlers) {
+        $('.todos').empty();
+        $.each(tiddlers, function(index, tiddler) {
+            addTodo(tiddler);
+        });
+    }
+
+    function refreshList(sortKey) {
+        var uri = '/bags/' + space +
+            '_public/tiddlers?fat=1;select=tag:todo:active';
+
+        if (sortKey) {
+            uri = uri + ';sort=' + sortKey;
+        }
+
+        $.ajax({
+            url: uri,
+            type: 'GET',
+            dataType: 'json',
+            success: presentList
+        });
+    }
+
+
+    refreshList('modified');
+
+// see https://gist.github.com/1200559/1c2b2093a661c4727958ff232cd12de8b8fb9db9
     var adler32 = function(a){for(var b=65521,c=1,d=0,e=0,f;f=a.charCodeAt(e++);d=(d+c)%b)c=(c+f)%b;return(d<<16)|c};
 
 });
