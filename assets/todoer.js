@@ -16,13 +16,48 @@ $(function() {
         }
     }
 
-    $(document).on('click', '.todos input[type="checkbox"]', function() {
-        var listEl = $(this).parent().parent(),
-            tiddler = listEl.attr('data-tiddler');
+    function getTiddler(title, callback) {
+        var uri = '/bags/' + space + '_public/tiddlers/' + title;
 
-        if ($(this).is(':checked')) {
-            listEl.fadeOut();
+        $.ajax({
+            url: uri,
+            dataType: 'json',
+            success: callback
+        });
+    }
+
+    function completeTodo(tiddler) {
+        var activeTagIndex = tiddler.tags.indexOf('todo:active'),
+            uri = '/bags/' + space + '_public/tiddlers/' + tiddler.title,
+            tiddlerJSON;
+
+        if (activeTagIndex !== -1) {
+            tiddler.tags.splice(activeTagIndex, 1);
         }
+
+        tiddler.tags.push('todo:done');
+        tiddlerJSON = JSON.stringify(tiddler);
+
+        $.ajax({
+            url: uri,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: tiddlerJSON,
+            processData: false,
+            success: function() {
+                clearTodo(tiddler);
+            }
+        });
+
+    }
+
+    function clearTodo(tiddler) {
+        $('li[data-tiddler="' + tiddler.title + '"]').fadeOut();
+    }
+
+    $(document).on('click', '.todos input[type="checkbox"]', function() {
+        var tiddler = $(this).parent().parent().attr('data-tiddler');
+        getTiddler(tiddler, completeTodo);
     });
 
     $('.dataentry form').submit(function(event) {
@@ -31,7 +66,7 @@ $(function() {
         var textarea = $(this).find('textarea'),
             tagsarea = $(this).find('input[name="tags"]'),
             text = textarea.val(),
-            tags = tagsarea.val().split(/\s+/),
+            tags = tagsarea.val() ? tagsarea.val().split(/\s+/) : [],
             hash = adler32(text + tags + Date.now()),
             uri = '/bags/' + space + '_public/tiddlers/'
                 + encodeURIComponent(hash),
@@ -47,9 +82,11 @@ $(function() {
             type: 'PUT',
             contentType: 'application/json',
             data: tiddlerJSON,
-            processDate: false,
+            processData: false,
             success: function() {
                 tiddler.title = hash;
+                textarea.val('');
+                tagsarea.val('');
                 addTodo(tiddler);
             }
         });
@@ -83,6 +120,6 @@ $(function() {
     refreshList('modified');
 
 // see https://gist.github.com/1200559/1c2b2093a661c4727958ff232cd12de8b8fb9db9
-    var adler32 = function(a){for(var b=65521,c=1,d=0,e=0,f;f=a.charCodeAt(e++);d=(d+c)%b)c=(c+f)%b;return(d<<16)|c};
+    function adler32(a){for(var b=65521,c=1,d=0,e=0,f;f=a.charCodeAt(e++);d=(d+c)%b)c=(c+f)%b;return(d<<16)|c};
 
 });
