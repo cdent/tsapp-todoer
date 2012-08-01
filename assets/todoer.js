@@ -1,6 +1,7 @@
-/*jslint browser: true */
+/*jslint vars: true, browser: true */
+/*global jQuery, tiddlyweb */
 
-$(function() {
+jQuery(function($) {
     "use strict";
 
     /*
