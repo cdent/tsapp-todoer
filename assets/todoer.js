@@ -1,6 +1,8 @@
-/*jslint browser: true */
+/*jslint vars: true, browser: true */
+/*global jQuery, tiddlyweb */
 
-$(function() {
+
+jQuery(function($) {
     "use strict";
 
     /*
@@ -87,7 +89,7 @@ $(function() {
 
     }
 
-    /* 
+    /*
      * Remove the list element associated with a todo tiddler.
      */
     function clearTodo(tiddler) {
